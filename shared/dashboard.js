@@ -40,7 +40,7 @@ const renewalsThisQtr = accounts.filter(a => {
     const d = new Date(a.renewalDate + 'T00:00:00');
     return d >= FQ_START && d <= FQ_END;
 }).length;
-const lowGmvCount = accounts.filter(a => a.gmv && a.gmv.pct < 30).length;
+const lowGmvCount = accounts.filter(a => (a.gmv || a.sends) && (a.gmv || a.sends).pct < 30).length;
 const ariTotalCount = accounts.filter(a => a.ari && a.ari.length > 0).length;
 
 document.getElementById('summary-cards').innerHTML = `
@@ -49,7 +49,7 @@ document.getElementById('summary-cards').innerHTML = `
     <div class="summary-card alert"><div class="number">${raCount}</div><div class="label">Accts w/ Active RA</div></div>
     <div class="summary-card ${ariTotalCount > 0 ? 'ari-card' : ''}"><div class="number">${ariTotalCount}</div><div class="label">Active ARIs</div></div>
     <div class="summary-card ${renewalsThisQtr > 0 ? 'warn' : ''}"><div class="number">${renewalsThisQtr}</div><div class="label">Renewals This Qtr</div></div>
-    <div class="summary-card"><div class="number">${lowGmvCount}</div><div class="label">GMV &lt;30% Util</div></div>
+    <div class="summary-card"><div class="number">${lowGmvCount}</div><div class="label">Util &lt;30%</div></div>
 `;
 
 function formatDate(dateStr) {
@@ -96,8 +96,8 @@ function calcProjected(g) {
 }
 
 function renderGMV(acct) {
-    if (!acct.gmv) return '<span style="color:#b0adab">—</span>';
-    const g = acct.gmv;
+    const g = acct.gmv || acct.sends;
+    if (!g) return '<span style="color:#b0adab">—</span>';
     const pct = g.pct;
     const projected = calcProjected(g);
     let barColor = 'green';
@@ -106,13 +106,16 @@ function renderGMV(acct) {
     else if (projected >= 70) { barColor = 'orange'; pctClass = 'mid'; }
     else if (pct >= 30) { barColor = 'blue'; }
     const isPPO = g.entitlement.includes('PPO');
+    const isGMV = g.entitlement.includes('GMV');
     let tooltip;
     if (isPPO) {
         tooltip = `${g.entitlement}\nAllowance: ${Number(g.allowance).toLocaleString()} orders\nUsed: ${Number(g.used).toLocaleString()} orders (${pct}%)\nProjected by end of contract: ${projected}%\nContract ends: ${g.contractEnd}`;
-    } else {
+    } else if (isGMV) {
         const allowFmt = (g.allowance / 1e6).toFixed(0);
         const usedFmt = (g.used / 1e6).toFixed(0);
         tooltip = `${g.entitlement}\nAllowance: $${Number(allowFmt).toLocaleString()}M\nUsed: $${Number(usedFmt).toLocaleString()}M (${pct}%)\nProjected by end of contract: ${projected}%\nContract ends: ${g.contractEnd}`;
+    } else {
+        tooltip = `${g.entitlement}\nAllowance: ${Number(g.allowance).toLocaleString()}\nUsed: ${Number(g.used).toLocaleString()} (${pct}%)\nProjected by end of contract: ${projected}%\nContract ends: ${g.contractEnd}`;
     }
     const projBar = Math.min(projected, 100);
     const actBar = Math.min(pct, 100);
@@ -457,10 +460,10 @@ renderAll();
     const totalAcv = accounts.reduce((s, a) => s + (a.priorAcv || 0), 0);
     const totalAttrition = accounts.reduce((s, a) => s + (a.renewalAmount < 0 ? a.renewalAmount : 0), 0);
 
-    const gmvAccounts = accounts.filter(a => a.gmv);
-    const lowGmv = gmvAccounts.filter(a => a.gmv.pct < 30);
-    const midGmv = gmvAccounts.filter(a => a.gmv.pct >= 30 && a.gmv.pct < 60);
-    const highGmv = gmvAccounts.filter(a => a.gmv.pct >= 60);
+    const gmvAccounts = accounts.filter(a => a.gmv || a.sends);
+    const lowGmv = gmvAccounts.filter(a => (a.gmv || a.sends).pct < 30);
+    const midGmv = gmvAccounts.filter(a => (a.gmv || a.sends).pct >= 30 && (a.gmv || a.sends).pct < 60);
+    const highGmv = gmvAccounts.filter(a => (a.gmv || a.sends).pct >= 60);
 
     // CSM-level compliance
     const csmStats = csmOrder.map(csm => {
@@ -501,7 +504,7 @@ renderAll();
 
     const lowGmvHighAcv = lowGmv.filter(a => a.priorAcv >= 1000000);
     if (lowGmvHighAcv.length > 0) {
-        insights.push({ type: 'risk', text: `<strong>High-ACV accounts with low GMV utilization (&lt;30%):</strong> ${lowGmvHighAcv.map(a => a.name + ' (' + a.gmv.pct + '%)').join(', ')} — attrition risk if utilization doesn't improve.` });
+        insights.push({ type: 'risk', text: `<strong>High-ACV accounts with low utilization (&lt;30%):</strong> ${lowGmvHighAcv.map(a => a.name + ' (' + (a.gmv || a.sends).pct + '%)').join(', ')} — attrition risk if utilization doesn't improve.` });
     }
 
     if (totalAttrition < 0) {
@@ -559,8 +562,8 @@ renderAll();
     });
     html += '</div></div>';
 
-    // Panel 2: GMV Utilization Bands
-    html += '<div class="analysis-panel"><div class="analysis-panel-header">GMV Utilization Bands</div><div class="analysis-panel-body">';
+    // Panel 2: Utilization Bands
+    html += '<div class="analysis-panel"><div class="analysis-panel-header">Utilization Bands</div><div class="analysis-panel-body">';
     const gmvBands = [
         { label: '<30% (Low)', count: lowGmv.length, color: 'orange' },
         { label: '30–60% (On Track)', count: midGmv.length, color: 'green' },
