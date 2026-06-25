@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validation Rules — Book of Business</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root { --header-bg: #032d60; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Salesforce Sans', Arial, sans-serif; margin: 0; background: #f3f3f3; color: #181818; font-size: 13px; }
+        .app-header { background: var(--header-bg); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+        .app-header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+        .back-link { color: #fff; text-decoration: none; font-size: 1.1rem; opacity: 0.8; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 1000px; margin: 2rem auto; padding: 0 2rem; }
+        .section { background: #fff; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.07); }
+        .section h2 { margin: 0 0 1rem; font-size: 1rem; color: #032d60; border-bottom: 2px solid #eef4ff; padding-bottom: 0.5rem; }
+        .section h3 { margin: 1rem 0 0.5rem; font-size: 0.85rem; color: #514f4d; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.5rem; }
+        th { background: #f4f6f9; padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; color: #514f4d; border-bottom: 1px solid #e5e5e5; }
+        td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+        .tag { display: inline-block; font-weight: 700; padding: 2px 8px; border-radius: 3px; font-size: 0.72rem; margin: 1px 2px; }
+        .tag.valid { background: #f0fef0; color: #2e844a; }
+        .tag.invalid { background: #fef0f0; color: #c23934; }
+        .tag.coaching { background: #fef9f2; color: #8c4b02; }
+        .badge { display: inline-block; font-size: 0.6rem; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+        .badge.fail { background: #fef0f0; color: #c23934; border: 1px solid #f4c5c5; }
+        .badge.pass { background: #f0fef0; color: #2e844a; border: 1px solid #c8e6c9; }
+        .badge.signal { background: #fef9f2; color: #8c4b02; border: 1px solid #f9d89c; }
+        .note { font-size: 0.72rem; color: #706e6b; margin-top: 0.5rem; line-height: 1.4; }
+        .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+        .dot.green { background: #2e844a; }
+        .dot.orange { background: #fe9339; }
+        .dot.red { background: #ea001e; }
+        .category-label { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 6px; border-radius: 3px; margin-bottom: 0.5rem; }
+        .category-label.compliance { background: #fef0f0; color: #c23934; }
+        .category-label.freshness { background: #eef4ff; color: #0176d3; }
+        .category-label.context { background: #fef9f2; color: #8c4b02; }
+        .applies-to { font-size: 0.65rem; color: #706e6b; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <a href="index.html" class="back-link" title="Back to All Clouds">&larr;</a>
+    <div>
+        <h1>Validation Rules</h1>
+        <div class="subtitle">Comprehensive reference for all dashboard validations across CC, MC, Core, and Tableau</div>
+    </div>
+</header>
+
+<div class="container">
+
+<!-- Overview -->
+<div class="section">
+    <h2>Overview</h2>
+    <p class="note">The Book of Business dashboards perform 12 types of validation and analysis on each account:</p>
+    <table>
+        <thead><tr><th>Type</th><th>Column / Location</th><th>Severity</th><th>Purpose</th></tr></thead>
+        <tbody>
+            <tr>
+                <td><span class="category-label compliance">Compliance</span></td>
+                <td>CSG Compliance &amp; RA Hashtag Compliance columns</td>
+                <td><span class="badge fail">FAIL</span> / <span class="badge pass">PASS</span></td>
+                <td>Validates required hashtags are present and correctly formatted</td>
+            </tr>
+            <tr>
+                <td><span class="category-label freshness">Freshness</span></td>
+                <td>Colored dots next to CSG Compliance &amp; RA columns</td>
+                <td><span class="dot green"></span>Fresh / <span class="dot orange"></span>Aging / <span class="dot red"></span>Stale</td>
+                <td>Checks how recently CSG Notes and Red Account records were updated</td>
+            </tr>
+            <tr>
+                <td><span class="category-label context">Context Signal</span></td>
+                <td>Analysis tab &rarr; Coaching Insights</td>
+                <td><span class="badge signal">COACHING</span></td>
+                <td>Flags mismatches between RA play type and CSG Notes assessment</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 1. CSG Notes Compliance -->
+<div class="section">
+    <h2>1. CSG Notes Compliance (SEM_Notes__c on Renewal Opportunity)</h2>
+    <p class="note">Applies to: <strong>All clouds</strong> (CC, MC, Core, Tableau). Displayed in the "CSG Compliance" column. Accounts without an active renewal show "(No active renewal)" and are not validated.</p>
+
+    <h3>Required: License Hashtag (exactly one must be present)</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Meaning</th><th>Fails if...</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#LicNoAttrit</span></td><td>No license attrition expected</td><td rowspan="3">None of these three is present in CSG Notes</td></tr>
+            <tr><td><span class="tag valid">#LicPartialAttrit</span></td><td>Partial attrition expected</td></tr>
+            <tr><td><span class="tag valid">#LicFullAttrit</span></td><td>Full attrition expected</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Required: Signature Risk Hashtag (on Signature renewals)</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Meaning</th><th>Fails if...</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#SigRisk</span></td><td>Signature at risk</td><td rowspan="4">Account has "Signature" in products/notes but none of these is present</td></tr>
+            <tr><td><span class="tag valid">#NoSigRisk</span></td><td>No Signature risk</td></tr>
+            <tr><td><span class="tag valid">#SigAttrit</span></td><td>Signature attrition expected</td></tr>
+            <tr><td><span class="tag valid">#NoSigAttrit</span></td><td>No Signature attrition</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Required: Red Account Reference (when RA exists)</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>When Required</th><th>Fails if...</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#RA</span></td><td>Account has an active Red Account (any stage)</td><td><code>#RA</code> not found in CSG Notes when at least one active RA exists</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Invalid Hashtags (automatically flagged as FAIL)</h3>
+    <table>
+        <thead><tr><th>Invalid</th><th>Correct Version</th><th>Common Mistake</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag invalid">#NoAttrit</span></td><td><span class="tag valid">#LicNoAttrit</span></td><td>Missing "Lic" prefix</td></tr>
+            <tr><td><span class="tag invalid">#Attrit</span></td><td><span class="tag valid">#LicPartialAttrit</span> or <span class="tag valid">#LicFullAttrit</span></td><td>Too vague — must specify partial/full</td></tr>
+            <tr><td><span class="tag invalid">#PartialAttrition</span></td><td><span class="tag valid">#LicPartialAttrit</span></td><td>Wrong suffix</td></tr>
+            <tr><td><span class="tag invalid">#PartialAttrit</span></td><td><span class="tag valid">#LicPartialAttrit</span></td><td>Missing "Lic" prefix</td></tr>
+            <tr><td><span class="tag invalid">#FullAttritRisk</span></td><td><span class="tag valid">#LicFullAttrit</span></td><td>Wrong format</td></tr>
+            <tr><td><span class="tag invalid">#FullAttrit</span></td><td><span class="tag valid">#LicFullAttrit</span></td><td>Missing "Lic" prefix</td></tr>
+            <tr><td><span class="tag invalid">#NoSigAttrit</span></td><td><span class="tag valid">#NoSigRisk</span> or <span class="tag valid">#SigAttrit</span></td><td>Conflated risk/attrition tags</td></tr>
+            <tr><td><span class="tag invalid">#Signature</span></td><td><span class="tag valid">#SigRisk</span> or <span class="tag valid">#NoSigRisk</span></td><td>Not a valid risk hashtag</td></tr>
+            <tr><td><span class="tag invalid">#SigTrial</span></td><td>N/A (valid only as RA play hashtag <span class="tag valid">#SIGTRIAL</span>)</td><td>RA play hashtag used in CSG Notes</td></tr>
+            <tr><td><span class="tag invalid">#RedAcct</span></td><td><span class="tag valid">#RA</span></td><td>Wrong tag name</td></tr>
+            <tr><td><span class="tag invalid">@LicNoAttrit</span></td><td><span class="tag valid">#LicNoAttrit</span></td><td>Wrong symbol (@ instead of #)</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 2. RA Hashtag Compliance -->
+<div class="section">
+    <h2>2. Red Account Hashtag Compliance (ECOMM_Headline__c)</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Displayed in the "RA Hashtag Compliance" column. Each Red Account's ECOMM Headline is checked for a valid play hashtag.</p>
+
+    <h3>Valid Play Hashtags (at least one required in ECOMM Headline)</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Play Type</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#SIGTRIAL</span></td><td>Signature Trial</td><td>Customer in a Signature trial period</td></tr>
+            <tr><td><span class="tag valid">#ARI</span></td><td>Adoption Risk Investment</td><td>ARI-funded engagement to drive adoption</td></tr>
+            <tr><td><span class="tag valid">#SWAP</span></td><td>Swap Program</td><td>Customer being migrated to a different product</td></tr>
+            <tr><td><span class="tag valid">#IMPLEMENT</span></td><td>Implementation</td><td>Active implementation in progress</td></tr>
+            <tr><td><span class="tag valid">#ADOPT</span></td><td>Adoption</td><td>Driving adoption of underutilized (shelfware) licenses</td></tr>
+            <tr><td><span class="tag valid">#RFP</span></td><td>RFP / Competitive</td><td>Open RFP or active competitive evaluation</td></tr>
+            <tr><td><span class="tag valid">#REVIVE</span></td><td>Revive</td><td>Top 100 Tableau attrition recovery</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Invalid / Non-Standard (commonly seen but NOT valid)</h3>
+    <table>
+        <thead><tr><th>Invalid Tag</th><th>Why It Fails</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag invalid">#PRECAUTIONARY</span></td><td>Describes RA stage, not a play</td></tr>
+            <tr><td><span class="tag invalid">#AgFStage4</span></td><td>Internal process label, not an offensive play</td></tr>
+            <tr><td><span class="tag invalid">#LOST</span></td><td>Outcome, not a play</td></tr>
+            <tr><td><span class="tag invalid">#DCCAP</span></td><td>Product issue label, not a play</td></tr>
+            <tr><td><span class="tag invalid">#nonactionable</span></td><td>Not a recognized play hashtag</td></tr>
+            <tr><td><span class="tag invalid">#KMOD</span></td><td>Not a recognized play hashtag</td></tr>
+            <tr><td><span class="tag invalid">#MAP</span></td><td>Not a recognized play hashtag</td></tr>
+            <tr><td><span class="tag invalid">#january</span></td><td>Date reference, not a play</td></tr>
+        </tbody>
+    </table>
+
+    <p class="note"><strong>Pass condition:</strong> At least one valid play hashtag found anywhere in the ECOMM Headline text (case-insensitive match). <strong>Fail condition:</strong> No valid play hashtag present.</p>
+</div>
+
+<!-- 3. Red Account Filters -->
+<div class="section">
+    <h2>3. Red Account Display Filters</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Only Red Accounts meeting ALL of the following criteria are displayed on the dashboard.</p>
+
+    <table>
+        <thead><tr><th>Field</th><th>Required Value</th><th>Effect if Not Met</th></tr></thead>
+        <tbody>
+            <tr><td><code>Account_Status__c</code></td><td><code>'5 - Active Opportunity'</code></td><td>RA excluded (not tied to an active opportunity)</td></tr>
+            <tr><td><code>Stage__c</code></td><td>Must be one of: <code>Open</code>, <code>Precautionary</code>, <code>Triage</code></td><td>RA excluded (Invalid stage = closed/irrelevant)</td></tr>
+            <tr><td><code>Action_Plan_Status__c</code></td><td>Must NOT be <code>'Resolved'</code></td><td>RA excluded (resolved = no longer actionable)</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Status Dot Mapping</h3>
+    <table>
+        <thead><tr><th>Action_Plan_Status__c Value</th><th>Visual</th><th>Status in data.js</th></tr></thead>
+        <tbody>
+            <tr><td>New, Resolution in Progress, Plan Under Development</td><td><span class="dot red"></span> Red dot</td><td><code>"active"</code></td></tr>
+            <tr><td>Precautionary</td><td><span class="dot orange"></span> Orange dot</td><td><code>"precautionary"</code></td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 4. Freshness Validation -->
+<div class="section">
+    <h2>4. Freshness Validation</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Displayed as small colored dots next to the CSG Compliance and RA columns. Tooltip shows date and days since last update.</p>
+
+    <h3>CSG Notes Freshness</h3>
+    <table>
+        <thead><tr><th>Source</th><th>How Parsed</th><th>Stored As</th></tr></thead>
+        <tbody>
+            <tr><td><code>SEM_Notes__c</code> on renewal opportunity</td><td>Most recent date prefix in the text (e.g., "06/18/26", "6/1/2026")</td><td><code>csgNotesDate</code> in data.js (ISO format)</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Red Account Freshness</h3>
+    <table>
+        <thead><tr><th>Source</th><th>How Parsed</th><th>Stored As</th></tr></thead>
+        <tbody>
+            <tr><td><code>LastModifiedDate</code> on Red_Account__c</td><td>Direct from SOQL query</td><td><code>lastModified</code> in each RA object in data.js</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Thresholds (same for both CSG Notes and Red Accounts)</h3>
+    <table>
+        <thead><tr><th>Indicator</th><th>Days Since Update</th><th>Meaning</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td><span class="dot green"></span> Green (Fresh)</td><td>&le; 14 days</td><td>Recently updated</td><td>No action needed</td></tr>
+            <tr><td><span class="dot orange"></span> Orange (Aging)</td><td>15 &ndash; 21 days</td><td>Getting stale</td><td>Nudge CSM to update</td></tr>
+            <tr><td><span class="dot red"></span> Red (Stale)</td><td>&gt; 21 days</td><td>Overdue for update</td><td>Escalate in 1:1 — immediate attention needed</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Analysis Tab Coaching Insight</h3>
+    <p class="note">When accounts have stale records, the Analysis tab surfaces: "X accounts have stale CSG Notes (&gt;3 weeks)" and "X Red Accounts not updated in &gt;3 weeks."</p>
+</div>
+
+<!-- 5. Context Signals -->
+<div class="section">
+    <h2>5. Context Signals (RA Play vs CSG Notes Mismatch)</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Displayed in the Analysis tab as orange coaching-style insights. NOT shown as inline compliance failures.</p>
+
+    <h3>Rules</h3>
+    <table>
+        <thead><tr><th>RA Play Hashtag</th><th>CSG Notes Hashtag</th><th>Signal Surfaced</th><th>Why This Matters</th></tr></thead>
+        <tbody>
+            <tr>
+                <td><span class="tag valid">#RFP</span></td>
+                <td><span class="tag coaching">#LicNoAttrit</span></td>
+                <td>RFP active but no attrition forecasted</td>
+                <td>Competitive situations inherently carry attrition risk. CSM should confirm they've assessed and the customer will stay.</td>
+            </tr>
+            <tr>
+                <td><span class="tag valid">#SIGTRIAL</span></td>
+                <td><span class="tag coaching">#NoSigRisk</span></td>
+                <td>Signature Trial active but no Signature risk noted</td>
+                <td>A Signature Trial implies some uncertainty about the Signature tier. CSM should confirm the risk assessment.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Behavior</h3>
+    <ul style="font-size:0.78rem; line-height:1.6; color:#3e3e3c;">
+        <li>Only triggered when BOTH conditions are true (active RA with the play hashtag AND the specific CSG Notes hashtag)</li>
+        <li>Displayed as orange "coaching" insight cards in the Analysis tab</li>
+        <li>NOT shown as compliance failures in table columns (no red "FAIL" badge)</li>
+        <li>Intent: prompt managers to confirm the CSM's assessment is intentional during 1:1s</li>
+        <li>A CSM may legitimately have #LicNoAttrit with an #RFP RA — these are conversation starters, not errors</li>
+    </ul>
+</div>
+
+<!-- 6. Utilization Thresholds -->
+<div class="section">
+    <h2>6. Utilization Thresholds</h2>
+    <p class="note">Applies to: <strong>All clouds</strong> (metric varies by cloud). Displayed in the utilization column as a dual-layer progress bar.</p>
+
+    <h3>Metrics by Cloud</h3>
+    <table>
+        <thead><tr><th>Cloud</th><th>Primary Metric</th><th>Source</th></tr></thead>
+        <tbody>
+            <tr><td>Commerce Cloud</td><td>GMV (Gross Merchandise Value) or PPO (orders)</td><td>EntitlementSchedule where name LIKE '%GMV%' or 'Commerce Cloud - Digital - PPO'</td></tr>
+            <tr><td>Marketing Cloud</td><td>Super Messages (excluding SMS/MMS)</td><td>EntitlementSchedule where name = 'Super Messages - excluding SMS/MMS'</td></tr>
+            <tr><td>Core</td><td>Varies (Data Services Credits, Einstein Requests, API Manager, etc.)</td><td>EntitlementSchedule — highest-relevance active entitlement selected</td></tr>
+            <tr><td>Tableau</td><td>Analytical Impressions (dashboard view renders)</td><td>EntitlementSchedule where name = 'Analytical Impressions'</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Color Thresholds (Projected End-of-Contract %)</h3>
+    <table>
+        <thead><tr><th>Color</th><th>Projected %</th><th>Risk Level</th><th>Action</th></tr></thead>
+        <tbody>
+            <tr><td style="color:#2e844a; font-weight:600;">Green</td><td>&lt; 50%</td><td>Low utilization risk</td><td>Monitor for adoption risk if very low (&lt;30%)</td></tr>
+            <tr><td style="color:#fe9339; font-weight:600;">Orange</td><td>50% &ndash; 80%</td><td>Moderate</td><td>On track or approaching limits</td></tr>
+            <tr><td style="color:#c23934; font-weight:600;">Red</td><td>&gt; 80%</td><td>High utilization risk</td><td>May exceed contract limits — discuss early renewal or upsell</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Summary Card Flag</h3>
+    <p class="note">Accounts below 30% utilization are counted in the "Low Util" summary card (labeled "GMV &lt;30% Util" for CC, "Sends &lt;30% Util" for MC, "Low Util" for Core, "Low Util" for Tableau). These represent adoption risk — customers not getting value from what they purchased.</p>
+
+    <h3>Analysis Tab Insight</h3>
+    <p class="note">High-ACV accounts (&ge;$1M) with low utilization (&lt;30%) are flagged as risk insights: "High-ACV accounts with low utilization — attrition risk if utilization doesn't improve."</p>
+</div>
+
+<!-- 7. Renewal Date Urgency -->
+<div class="section">
+    <h2>7. Renewal Date Urgency</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Displayed in the renewal date column with color coding.</p>
+
+    <table>
+        <thead><tr><th>Color</th><th>Condition</th><th>Meaning</th></tr></thead>
+        <tbody>
+            <tr><td style="color:#c23934; font-weight:700;">Red (Urgent)</td><td>Renewal date is within 60 days of <code>dashboardConfig.asOf</code></td><td>Imminent renewal — must have active engagement plan</td></tr>
+            <tr><td style="color:#fe9339; font-weight:600;">Orange (Soon)</td><td>Renewal date is within current fiscal quarter (<code>fqStart</code> to <code>fqEnd</code>)</td><td>Current-quarter renewal — should be in active negotiation</td></tr>
+            <tr><td style="color:#181818;">Default</td><td>Renewal date is beyond current FQ</td><td>No urgency flag</td></tr>
+        </tbody>
+    </table>
+
+    <p class="note"><strong>Salesforce Fiscal Calendar:</strong> Quarters start Feb 1, May 1, Aug 1, Nov 1.</p>
+</div>
+
+<!-- 8. Health Score -->
+<div class="section">
+    <h2>8. Health Score Display</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Source: <code>Account.Success_Segment__c</code> (system-generated). Not a validation per se, but used for risk identification in the "By Risk" tab.</p>
+
+    <table>
+        <thead><tr><th>Value</th><th>Color</th><th>Risk Tab Inclusion</th></tr></thead>
+        <tbody>
+            <tr><td>Strong</td><td style="color:#2e844a; font-weight:600;">Green</td><td>Not included in risk tab</td></tr>
+            <tr><td>Moderate</td><td style="color:#0176d3; font-weight:600;">Blue</td><td>Not included in risk tab</td></tr>
+            <tr><td>Invest / Adopt</td><td style="color:#0d9488; font-weight:600;">Teal</td><td>Not included in risk tab</td></tr>
+            <tr><td>Declining</td><td style="color:#c23934; font-weight:600;">Red</td><td>Included in "Declining Health" section</td></tr>
+            <tr><td>Unassigned / null</td><td style="color:#706e6b; font-style:italic;">Gray italic</td><td>Flagged in Analysis tab as data gap</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 9. Analysis Tab Auto-Generated Insights -->
+<div class="section">
+    <h2>9. Analysis Tab — Auto-Generated Insights</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. These coaching and risk insights are computed dynamically from the data.js accounts array.</p>
+
+    <table>
+        <thead><tr><th>Insight Type</th><th>Trigger Condition</th><th>Message Pattern</th></tr></thead>
+        <tbody>
+            <tr><td><span class="badge signal">Coaching</span></td><td>CSM has accounts with blank/missing CSG Notes</td><td>"Missing CSG Notes: {CSM} ({count}) — engagement gaps"</td></tr>
+            <tr><td><span class="badge signal">Coaching</span></td><td>CSM compliance rate &lt; 70%</td><td>"Low compliance rate: {CSM} ({rate}%) — training recommended"</td></tr>
+            <tr><td><span class="badge fail">Risk</span></td><td>Account has RA but no #RA in CSG Notes</td><td>"Red Account without #RA in CSG Notes: {accounts}"</td></tr>
+            <tr><td><span class="badge fail">Risk</span></td><td>High-ACV account (&ge;$1M) with &lt;30% utilization</td><td>"High-ACV accounts with low utilization: {accounts}"</td></tr>
+            <tr><td><span class="badge pass">Opportunity</span></td><td>Accounts with Unassigned health</td><td>"{count} accounts with Unassigned health — investigate"</td></tr>
+            <tr><td><span class="badge fail">Risk</span></td><td>Total forecasted attrition is negative</td><td>"Forecasted attrition exposure: ${amount} across {count} accounts"</td></tr>
+            <tr><td><span class="badge pass">Opportunity</span></td><td>CSM has 100% compliance with &ge;2 accounts</td><td>"100% compliance: {CSMs} — recognize and share best practices"</td></tr>
+            <tr><td><span class="badge signal">Coaching</span></td><td>#RFP RA + #LicNoAttrit in notes</td><td>"Context Signal: {account} — verify no attrition risk"</td></tr>
+            <tr><td><span class="badge signal">Coaching</span></td><td>#SIGTRIAL RA + #NoSigRisk in notes</td><td>"Context Signal: {account} — verify Signature risk"</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 10. Utilization Trend Tracking -->
+<div class="section">
+    <h2>10. Utilization Trend Tracking</h2>
+    <p class="note">Applies to: <strong>All clouds</strong> (CC, MC, Core, Tableau). Displayed as inline sparklines in the utilization column and a full-width trend chart in the Analysis tab.</p>
+
+    <h3>Data Source</h3>
+    <table>
+        <thead><tr><th>File</th><th>Format</th><th>Update Frequency</th></tr></thead>
+        <tbody>
+            <tr><td><code>history.js</code> (per manager folder)</td><td>Array of <code>{date, snapshots: [{name, pct}]}</code></td><td>Appended on every dashboard refresh — never overwritten</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Sparkline Rendering (Inline)</h3>
+    <table>
+        <thead><tr><th>Condition</th><th>Behavior</th></tr></thead>
+        <tbody>
+            <tr><td><code>utilizationHistory</code> has &le;1 entry</td><td>No sparkline shown — dashboard renders identically to before</td></tr>
+            <tr><td><code>utilizationHistory</code> has &ge;2 entries</td><td>50px-wide SVG polyline next to utilization bar</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Sparkline Color</h3>
+    <table>
+        <thead><tr><th>Trend Direction</th><th>Color</th><th>Meaning</th></tr></thead>
+        <tbody>
+            <tr><td>Rising (&gt;5pt increase from first to last)</td><td style="color:#c23934;font-weight:600;">Red</td><td>Consumption accelerating — may exceed contract</td></tr>
+            <tr><td>Falling (&gt;5pt decrease from first to last)</td><td style="color:#2e844a;font-weight:600;">Green</td><td>Usage declining — possible adoption risk</td></tr>
+            <tr><td>Stable (within &plusmn;5pt)</td><td style="color:#706e6b;font-weight:600;">Gray</td><td>Steady state</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Trends Chart (Analysis Tab)</h3>
+    <p class="note">A full-width SVG line chart at the bottom of the Analysis tab. Shows utilization trajectories for the top 10 accounts by Prior ACV. Each account gets a distinct color. Grid lines at 0%, 25%, 50%, 75%, 100%. Only renders when &ge;2 history entries exist.</p>
+</div>
+
+<!-- 11. CSM Workload Distribution -->
+<div class="section">
+    <h2>11. CSM Workload Distribution</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Displayed as a panel in the Analysis tab showing accounts per CSM as horizontal bars.</p>
+
+    <h3>Metrics Displayed</h3>
+    <table>
+        <thead><tr><th>Metric</th><th>Source</th><th>Display</th></tr></thead>
+        <tbody>
+            <tr><td>Account count per CSM</td><td>Count of accounts where <code>csm === csmName</code></td><td>Horizontal bar + "X accts" label</td></tr>
+            <tr><td>Average accounts per CSM</td><td>Total accounts / CSM count</td><td>Text: "Avg: X accounts, $YM ACV per CSM"</td></tr>
+            <tr><td>Average ACV per CSM</td><td>Total ACV / CSM count</td><td>Included in average text</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Imbalance Flags</h3>
+    <table>
+        <thead><tr><th>Condition</th><th>Flag</th><th>Meaning</th></tr></thead>
+        <tbody>
+            <tr><td>CSM has &gt;1.5&times; the team average</td><td><span style="color:#c23934;font-weight:600;">&#9650; heavy</span></td><td>Overloaded — consider rebalancing or additional support</td></tr>
+            <tr><td>CSM has &lt;0.5&times; the team average</td><td><span style="color:#706e6b;">&#9661; light</span></td><td>Under-utilized capacity — could absorb more accounts</td></tr>
+        </tbody>
+    </table>
+
+    <p class="note"><strong>Clickable:</strong> Clicking a CSM's bar navigates to the "By CSM" tab with that CSM pre-selected in the dropdown filter.</p>
+</div>
+
+<!-- 12. Last Refreshed Timestamp -->
+<div class="section">
+    <h2>12. Last Refreshed Timestamp</h2>
+    <p class="note">Applies to: <strong>All clouds</strong>. Displayed in the dashboard header (top-right area).</p>
+
+    <table>
+        <thead><tr><th>Source</th><th>Location</th><th>Format</th></tr></thead>
+        <tbody>
+            <tr><td><code>dashboardConfig.asOf</code></td><td>Below the "As of" date and account/CSM count</td><td>"Last refreshed: YYYY-MM-DD"</td></tr>
+        </tbody>
+    </table>
+
+    <p class="note"><strong>Purpose:</strong> Tells anyone opening the dashboard whether they're looking at today's data or last week's. Especially important for dashboards shared via GitHub Pages where the viewer can't tell when the last commit was made.</p>
+</div>
+
+</div>
+
+</body>
+</html>

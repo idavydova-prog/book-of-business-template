@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PACE Hashtag Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root { --header-bg: #032d60; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Salesforce Sans', Arial, sans-serif; margin: 0; background: #f3f3f3; color: #181818; font-size: 13px; }
+        .app-header { background: var(--header-bg); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+        .app-header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+        .back-link { color: #fff; text-decoration: none; font-size: 1.1rem; opacity: 0.8; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 2rem; }
+        .section { background: #fff; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.07); }
+        .section h2 { margin: 0 0 1rem; font-size: 1rem; color: #032d60; border-bottom: 2px solid #eef4ff; padding-bottom: 0.5rem; }
+        .section h3 { margin: 1rem 0 0.5rem; font-size: 0.85rem; color: #514f4d; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.5rem; }
+        th { background: #f4f6f9; padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; color: #514f4d; border-bottom: 1px solid #e5e5e5; }
+        td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+        .tag { display: inline-block; background: #eef4ff; color: #032d60; font-weight: 700; padding: 2px 8px; border-radius: 3px; font-size: 0.72rem; margin: 1px 2px; }
+        .tag.invalid { background: #fef0f0; color: #c23934; }
+        .tag.valid { background: #f0fef0; color: #2e844a; }
+        .note { font-size: 0.72rem; color: #706e6b; margin-top: 0.5rem; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <a href="../index.html" class="back-link" title="Back to Home">&larr;</a>
+    <div>
+        <h1>PACE Hashtag Guide</h1>
+        <div class="subtitle">CSG Notes & Red Account Compliance Reference</div>
+    </div>
+</header>
+
+<div class="container">
+
+<div class="section">
+    <h2>CSG Notes Hashtags (Renewal Opportunity — SEM_Notes__c)</h2>
+
+    <h3>License Hashtags (Required on ALL renewals)</h3>
+    <p class="note">Exactly one of the following must appear in every CSG Notes entry:</p>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Meaning</th><th>When to Use</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#LicNoAttrit</span></td><td>No license attrition expected</td><td>Default when renewal is flat or growing</td></tr>
+            <tr><td><span class="tag valid">#LicPartialAttrit</span></td><td>Partial attrition expected</td><td>Customer confirmed reducing some licenses</td></tr>
+            <tr><td><span class="tag valid">#LicFullAttrit</span></td><td>Full attrition expected</td><td>Customer confirmed full churn</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Signature Risk Hashtags (Required on Signature renewals)</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Meaning</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#SigRisk</span></td><td>Signature renewal is at risk</td></tr>
+            <tr><td><span class="tag valid">#NoSigRisk</span></td><td>Signature renewal is not at risk</td></tr>
+            <tr><td><span class="tag valid">#SigAttrit</span></td><td>Signature attrition confirmed</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Red Account Reference</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>When Required</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#RA</span></td><td>When an active Red Account exists for the account. Must include a shortened URL to the RA record.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Agentforce Hashtags</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Meaning</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#AFAttrit</span></td><td>Agentforce attrition risk</td></tr>
+            <tr><td><span class="tag valid">#AfNoRisk</span></td><td>Agentforce — no risk</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Invalid Hashtags (Common Mistakes)</h3>
+    <table>
+        <thead><tr><th>Invalid</th><th>Correct Form</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag invalid">#NoAttrit</span></td><td><span class="tag valid">#LicNoAttrit</span></td><td>Must specify license prefix</td></tr>
+            <tr><td><span class="tag invalid">#NoSigAttrit</span></td><td><span class="tag valid">#NoSigRisk</span></td><td>Use risk vocabulary, not attrition</td></tr>
+            <tr><td><span class="tag invalid">#PartialAttrit</span></td><td><span class="tag valid">#LicPartialAttrit</span></td><td>Must specify license prefix</td></tr>
+            <tr><td><span class="tag invalid">#FullAttrit</span></td><td><span class="tag valid">#LicFullAttrit</span></td><td>Must specify license prefix</td></tr>
+            <tr><td><span class="tag invalid">#NoRisk</span></td><td><span class="tag valid">#NoSigRisk</span></td><td>Must specify Sig prefix</td></tr>
+            <tr><td><span class="tag invalid">#partialattrit</span></td><td><span class="tag valid">#LicPartialAttrit</span></td><td>Case-sensitive</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Red Account ECOMM Headline Hashtags (Red_Account__c.ECOMM_Headline__c)</h2>
+
+    <h3>Valid Play Hashtags</h3>
+    <table>
+        <thead><tr><th>Hashtag</th><th>Play</th><th>Description</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag valid">#SIGTRIAL</span></td><td>Signature Trial</td><td>Customer trialing Signature-level support</td></tr>
+            <tr><td><span class="tag valid">#ARI</span></td><td>At-Risk Intervention</td><td>Structured intervention for at-risk accounts</td></tr>
+            <tr><td><span class="tag valid">#SWAP</span></td><td>Swap Program</td><td>Product swap/migration program</td></tr>
+            <tr><td><span class="tag valid">#IMPLEMENT</span></td><td>Implementation</td><td>Active implementation in progress</td></tr>
+            <tr><td><span class="tag valid">#ADOPT</span></td><td>Adoption</td><td>Adoption of shelfware</td></tr>
+            <tr><td><span class="tag valid">#RFP</span></td><td>RFP / Competitive</td><td>Open RFP or competitive evaluation</td></tr>
+            <tr><td><span class="tag valid">#REVIVE</span></td><td>Revive</td><td>Top 100 Tableau attrition recovery</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Invalid / Non-Standard (Commonly Used but NOT Valid)</h3>
+    <table>
+        <thead><tr><th>Invalid</th><th>Why</th></tr></thead>
+        <tbody>
+            <tr><td><span class="tag invalid">#PRECAUTIONARY</span></td><td>Describes status, not a play — use `Action_Plan_Status__c` field instead</td></tr>
+            <tr><td><span class="tag invalid">#AgFStage4</span></td><td>Internal stage label, not a recognized play</td></tr>
+            <tr><td><span class="tag invalid">#LOST</span></td><td>Outcome label, not an active play</td></tr>
+            <tr><td><span class="tag invalid">#DCCAP</span></td><td>Internal program code, not a recognized play</td></tr>
+            <tr><td><span class="tag invalid">#nonactionable</span></td><td>Status descriptor, not a play</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>CSG Notes Format</h2>
+    <p class="note">Standard format for the SEM_Notes__c field on the renewal opportunity:</p>
+    <div style="background:#f4f6f9;padding:1rem;border-radius:4px;font-family:monospace;font-size:0.75rem;margin-top:0.5rem;line-height:1.6;">
+        <strong>MM/DD/YYYY CSM_Name #LicHashtag #SigHashtag [#RA URL] [#AF hashtag]</strong><br>
+        Short narrative about account status and next steps.
+    </div>
+    <p class="note" style="margin-top:1rem;">
+        <strong>Example:</strong><br>
+        <code style="background:#eef4ff;padding:4px 8px;border-radius:3px;">06/02/2026 Benjamin Batista #LicNoAttrit #NoSigRisk Go-live blocked by Cimulate dependency; R&D prioritizing before July. KEM Memorial Day completed.</code>
+    </p>
+</div>
+
+</div>
+</body>
+</html>

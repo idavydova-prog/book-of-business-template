@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example Cloud — Book of Business</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root {
+            --header-bg: #032d60;
+            --card-hover: #f7f9fb;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Salesforce Sans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f3f3f3;
+            color: #181818;
+            min-height: 100vh;
+        }
+
+        .app-header {
+            background: var(--header-bg);
+            color: #fff;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .app-header h1 { margin: 0; font-size: 1.5rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.85rem; opacity: 0.8; margin-top: 4px; }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #706e6b;
+            margin-bottom: 0.75rem;
+        }
+
+        .bob-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .bob-card {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.15s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid #e5e5e5;
+        }
+
+        .bob-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+            border-color: #0176d3;
+        }
+
+        .bob-card .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #eef4ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .bob-card .icon svg { width: 28px; height: 28px; }
+
+        .bob-card .info { flex: 1; }
+
+        .bob-card .manager-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #032d60;
+            margin-bottom: 2px;
+        }
+
+        .bob-card .meta {
+            font-size: 0.75rem;
+            color: #706e6b;
+        }
+
+        .bob-card .arrow {
+            color: #0176d3;
+            font-size: 1.25rem;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .bob-card:hover .arrow { opacity: 1; }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .resource-card {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 1rem 1.25rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.15s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid #e5e5e5;
+        }
+
+        .resource-card:hover {
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+            border-color: #0176d3;
+        }
+
+        .resource-card .res-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+
+        .resource-card .res-info { flex: 1; }
+        .resource-card .res-title { font-size: 0.82rem; font-weight: 700; color: #032d60; }
+        .resource-card .res-desc { font-size: 0.68rem; color: #706e6b; margin-top: 2px; }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.72rem;
+            color: #b0adab;
+        }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <div style="display:flex;align-items:center;gap:1rem;justify-content:center;">
+        <a href="../index.html" style="color:#fff;text-decoration:none;font-size:1.5rem;opacity:0.7;" title="All Clouds">&larr;</a>
+        <div>
+            <h1>Example Cloud — Book of Business</h1>
+            <div class="subtitle">CSM Team Dashboards</div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="section-title">Select a Manager</div>
+    <div class="bob-grid" id="bob-grid"></div>
+</div>
+
+<div class="container" style="margin-top:0;">
+    <div class="section-title">Quick References</div>
+    <div class="resource-grid" id="resource-grid"></div>
+</div>
+
+<div class="footer">Data sourced from Salesforce Org62. Open individual dashboards by clicking a card above.</div>
+
+<script>
+const managers = [
+    {
+        name: "Example Manager",
+        folder: "Example Manager",
+        accounts: 5,
+        csms: 3,
+        role: "Manager"
+    }
+];
+
+const cloudIcon = `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path fill="#0176d3" d="M32 8C18.745 8 8 18.745 8 32s10.745 24 24 24 24-10.745 24-24S45.255 8 32 8zm-4 35l-9-9 2.83-2.83L28 37.34l12.17-12.17L43 28 28 43z"/></svg>`;
+
+const grid = document.getElementById('bob-grid');
+managers.forEach(m => {
+    const card = document.createElement('a');
+    card.className = 'bob-card';
+    card.href = `${encodeURIComponent(m.folder)}/index.html`;
+    card.innerHTML = `
+        <div class="icon">${cloudIcon}</div>
+        <div class="info">
+            <div class="manager-name">${m.name}</div>
+            <div class="meta">${m.accounts} accounts &middot; ${m.csms} CSMs &middot; ${m.role}</div>
+        </div>
+        <span class="arrow">&rsaquo;</span>
+    `;
+    grid.appendChild(card);
+});
+
+const resources = [
+    {
+        title: "Hashtag Guide",
+        desc: "Valid & invalid hashtags for CSG Notes and Red Account headlines",
+        href: "../resources/hashtag-guide.html",
+        color: "#0176d3",
+        icon: "#"
+    },
+    {
+        title: "CSG Notes Format",
+        desc: "Step-by-step template for compliant SEM_Notes__c entries",
+        href: "../resources/csg-notes-format.html",
+        color: "#2e844a",
+        icon: "✎"
+    },
+    {
+        title: "URL Shortener",
+        desc: "Shorten Org62 links for Red Account references in notes",
+        href: "../resources/url-shortener.html",
+        color: "#7c3aed",
+        icon: "↗"
+    }
+];
+
+const resGrid = document.getElementById('resource-grid');
+resources.forEach(r => {
+    const card = document.createElement('a');
+    card.className = 'resource-card';
+    card.href = r.href;
+    card.innerHTML = `
+        <div class="res-icon" style="background:${r.color}15;color:${r.color};font-weight:700;">${r.icon}</div>
+        <div class="res-info">
+            <div class="res-title">${r.title}</div>
+            <div class="res-desc">${r.desc}</div>
+        </div>
+    `;
+    resGrid.appendChild(card);
+});
+</script>
+</body>
+</html>

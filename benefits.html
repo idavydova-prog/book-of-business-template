@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Benefits — Book of Business</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root { --header-bg: #032d60; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Salesforce Sans', Arial, sans-serif; margin: 0; background: #f3f3f3; color: #181818; font-size: 13px; }
+        .app-header { background: var(--header-bg); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+        .app-header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+        .back-link { color: #fff; text-decoration: none; font-size: 1.1rem; opacity: 0.8; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 960px; margin: 2rem auto; padding: 0 2rem; }
+        .section { background: #fff; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.07); }
+        .section h2 { margin: 0 0 1rem; font-size: 1rem; color: #032d60; border-bottom: 2px solid #eef4ff; padding-bottom: 0.5rem; }
+        .section h3 { margin: 1rem 0 0.5rem; font-size: 0.85rem; color: #514f4d; }
+        .benefit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .benefit-card { border: 1px solid #e5e5e5; border-radius: 0.5rem; padding: 1rem 1.25rem; border-left: 4px solid #0176d3; }
+        .benefit-card.risk { border-left-color: #c23934; }
+        .benefit-card.efficiency { border-left-color: #2e844a; }
+        .benefit-card.coaching { border-left-color: #fe9339; }
+        .benefit-card.visibility { border-left-color: #7c3aed; }
+        .benefit-card .title { font-weight: 700; font-size: 0.82rem; color: #032d60; margin-bottom: 0.4rem; }
+        .benefit-card .desc { font-size: 0.75rem; color: #3e3e3c; line-height: 1.5; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.78rem; margin-top: 0.5rem; }
+        th { background: #f4f6f9; padding: 0.5rem 0.75rem; text-align: left; font-weight: 600; color: #514f4d; border-bottom: 1px solid #e5e5e5; }
+        td { padding: 0.5rem 0.75rem; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+        .note { font-size: 0.72rem; color: #706e6b; margin-top: 0.5rem; line-height: 1.4; }
+        .metric { font-size: 1.5rem; font-weight: 700; color: #032d60; }
+        .metric-label { font-size: 0.65rem; color: #706e6b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metrics-strip { display: flex; gap: 2rem; flex-wrap: wrap; margin: 1rem 0; }
+        .metrics-strip .item { text-align: center; min-width: 100px; }
+        .category-tag { display: inline-block; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 3px; }
+        .category-tag.risk { background: #fef0f0; color: #c23934; }
+        .category-tag.efficiency { background: #f0fef0; color: #2e844a; }
+        .category-tag.coaching { background: #fef9f2; color: #8c4b02; }
+        .category-tag.visibility { background: #f3e8ff; color: #5a1ba9; }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <a href="index.html" class="back-link" title="Back to All Clouds">&larr;</a>
+    <div>
+        <h1>Dashboard Benefits</h1>
+        <div class="subtitle">Value delivered by the Book of Business dashboards across CC, MC, Core, and Tableau</div>
+    </div>
+</header>
+
+<div class="container">
+
+<!-- Executive Summary -->
+<div class="section">
+    <h2>Executive Summary</h2>
+    <p style="font-size:0.82rem; line-height:1.6; color:#3e3e3c;">
+        The Book of Business dashboards consolidate data from multiple Salesforce objects into a single-pane view per CSM manager. By automating compliance validation, utilization tracking, and risk identification across four clouds and multiple teams, the dashboards eliminate manual report-pulling and enable proactive, data-driven 1:1 conversations.
+    </p>
+    <div class="metrics-strip">
+        <div class="item"><div class="metric">4</div><div class="metric-label">Clouds Covered</div></div>
+        <div class="item"><div class="metric">16+</div><div class="metric-label">Managers Supported</div></div>
+        <div class="item"><div class="metric">12</div><div class="metric-label">Validation Types</div></div>
+        <div class="item"><div class="metric">5</div><div class="metric-label">Data Sources Unified</div></div>
+    </div>
+</div>
+
+<!-- For CSM Managers -->
+<div class="section">
+    <h2>Benefits for CSM Managers</h2>
+
+    <div class="benefit-grid">
+        <div class="benefit-card coaching">
+            <div class="title">1:1 Prep in Seconds</div>
+            <div class="desc">Filter by CSM to see their full book — compliance gaps, stale notes, attrition risk — in one click. No more pulling 5 different Salesforce reports before each weekly sync.</div>
+        </div>
+        <div class="benefit-card risk">
+            <div class="title">Early Risk Detection</div>
+            <div class="desc">Freshness dots surface accounts where CSG Notes or Red Accounts haven't been updated in 3+ weeks. You see neglected accounts before they become escalations.</div>
+        </div>
+        <div class="benefit-card efficiency">
+            <div class="title">Compliance at a Glance</div>
+            <div class="desc">Instant pass/fail on every account's CSG Notes and RA hashtags. Identify training needs (who's below 70%?) and recognize high performers (who's at 100%?).</div>
+        </div>
+        <div class="benefit-card visibility">
+            <div class="title">Context Signals for Coaching</div>
+            <div class="desc">Automated detection when a CSM's hashtag assessment may not match the account reality (e.g., #LicNoAttrit on an account with an active RFP). Conversation starters, not penalties.</div>
+        </div>
+        <div class="benefit-card risk">
+            <div class="title">Attrition Exposure Visibility</div>
+            <div class="desc">Total forecasted attrition is aggregated per manager with account-level drill-down. See which accounts carry the biggest renewal risk and whether CSMs are documenting it correctly.</div>
+        </div>
+        <div class="benefit-card efficiency">
+            <div class="title">Utilization-Driven Actions</div>
+            <div class="desc">Dual-layer progress bars show actual vs projected end-of-contract utilization. Immediately identify: (1) low adoption accounts needing engagement, (2) overages needing upsell conversations.</div>
+        </div>
+        <div class="benefit-card visibility">
+            <div class="title">Utilization Trends Over Time</div>
+            <div class="desc">Inline sparklines show each account's consumption trajectory across refreshes. Spot accounts burning through entitlements faster than expected, or adoption stalling out — without waiting for QBR data.</div>
+        </div>
+        <div class="benefit-card coaching">
+            <div class="title">CSM Workload Balance</div>
+            <div class="desc">Workload distribution panel shows accounts and ACV per CSM with imbalance flags. Instantly identify if one CSM is carrying 3x the load of their peers — a rebalancing conversation starter.</div>
+        </div>
+        <div class="benefit-card efficiency">
+            <div class="title">Data Currency at a Glance</div>
+            <div class="desc">"Last refreshed" timestamp in the header tells you immediately whether you're looking at today's data or last week's. No more guessing if the dashboard is stale before a 1:1.</div>
+        </div>
+    </div>
+</div>
+
+<!-- For Individual CSMs -->
+<div class="section">
+    <h2>Benefits for Individual CSMs</h2>
+
+    <div class="benefit-grid">
+        <div class="benefit-card efficiency">
+            <div class="title">Self-Service Compliance Check</div>
+            <div class="desc">See exactly which accounts are missing hashtags, which are invalid, and what the correct tag should be — without waiting for a manager audit.</div>
+        </div>
+        <div class="benefit-card coaching">
+            <div class="title">Clear Expectations</div>
+            <div class="desc">The validation rules are codified and consistent. No ambiguity about what "compliant" means — the same rules apply to every account across every cloud.</div>
+        </div>
+        <div class="benefit-card visibility">
+            <div class="title">Renewal Calendar Awareness</div>
+            <div class="desc">Color-coded urgency (red = 60 days, orange = this quarter) makes it impossible to be surprised by an upcoming renewal. Sorted view by renewal date gives a natural priority order.</div>
+        </div>
+        <div class="benefit-card risk">
+            <div class="title">Red Account Tracking</div>
+            <div class="desc">All active RAs linked directly to Org62 records. Precautionary vs active distinction is visible at a glance. Resolved RAs are automatically excluded — no clutter.</div>
+        </div>
+    </div>
+</div>
+
+<!-- For Leadership -->
+<div class="section">
+    <h2>Benefits for Leadership / Cross-Cloud Visibility</h2>
+
+    <div class="benefit-grid">
+        <div class="benefit-card visibility">
+            <div class="title">Unified View Across Clouds</div>
+            <div class="desc">Same dashboard structure, same compliance rules, same visual language across CC, MC, Core, and Tableau. Leaders can move between cloud dashboards without learning a new interface.</div>
+        </div>
+        <div class="benefit-card efficiency">
+            <div class="title">Standardized Process Compliance</div>
+            <div class="desc">PACE hashtag rules are validated identically across all clouds. No "our cloud does it differently" exceptions. One standard, one measurement.</div>
+        </div>
+        <div class="benefit-card risk">
+            <div class="title">Portfolio-Level Risk Aggregation</div>
+            <div class="desc">Analysis tab shows total ACV at risk, team-wide compliance rates, and utilization distribution. Instant answer to "how healthy is this portfolio?"</div>
+        </div>
+        <div class="benefit-card coaching">
+            <div class="title">Coaching Pattern Recognition</div>
+            <div class="desc">Analysis tab surfaces systemic issues: which CSMs need hashtag training, which accounts are data-entry gaps, which RAs lack documentation. Patterns inform team-wide enablement.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Time Savings -->
+<div class="section">
+    <h2>Operational Efficiency</h2>
+
+    <table>
+        <thead><tr><th>Activity</th><th>Before Dashboard</th><th>With Dashboard</th><th>Time Saved</th></tr></thead>
+        <tbody>
+            <tr><td>Weekly 1:1 prep (per CSM)</td><td>15-20 min pulling reports, cross-referencing RAs and renewals</td><td>1-2 min: open dashboard, filter by CSM</td><td>~15 min/CSM/week</td></tr>
+            <tr><td>Monthly compliance audit</td><td>2-3 hours reviewing CSG Notes manually for each account</td><td>Automated: compliance column + Analysis tab shows all gaps</td><td>~2.5 hrs/month</td></tr>
+            <tr><td>Identifying stale accounts</td><td>Manual date comparison across records</td><td>Freshness dots auto-flag aging/stale records</td><td>Eliminated entirely</td></tr>
+            <tr><td>Attrition exposure calculation</td><td>Export to spreadsheet, sum negatives, identify top risks</td><td>Summary strip shows total + risk insight lists accounts</td><td>~30 min/month</td></tr>
+            <tr><td>Onboarding a new manager</td><td>Walk through Salesforce reports, explain what to monitor</td><td>Show dashboard — all signals are self-explanatory</td><td>Hours of ramp time</td></tr>
+            <tr><td>Identifying utilization anomalies</td><td>Pull entitlement reports, calculate projections manually</td><td>Color-coded bars with projected end-of-contract %</td><td>~1 hr/month</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Multi-Manager / Multi-Cloud -->
+<div class="section">
+    <h2>Multi-Manager, Multi-Cloud Scale</h2>
+
+    <h3>Why One Dashboard Per Manager (Not One Giant Report)</h3>
+    <table>
+        <thead><tr><th>Design Choice</th><th>Benefit</th></tr></thead>
+        <tbody>
+            <tr><td>Per-manager data.js isolation</td><td>Each manager sees only their team's accounts — no information overload. Fast load times even with 48+ accounts.</td></tr>
+            <tr><td>Shared dashboard.js rendering</td><td>Feature updates (like Context Signals) deploy to all managers across all four clouds with a single code change.</td></tr>
+            <tr><td>Consistent column structure across clouds</td><td>A manager who oversees multiple clouds (e.g., Avani Damboise on CC and Core) sees the same layout in both — only the utilization metric changes.</td></tr>
+            <tr><td>Cloud-specific home pages</td><td>Each of the four clouds has its own landing page with manager cards showing account/CSM counts — instant portfolio overview before drilling in.</td></tr>
+            <tr><td>Analysis tab per manager</td><td>Team-level KPIs (compliance rate, health distribution, ACV concentration) are scoped to YOUR team, not the entire org.</td></tr>
+        </tbody>
+    </table>
+
+    <h3>Cross-Cloud Consistency</h3>
+    <table>
+        <thead><tr><th>What's the Same</th><th>What Varies by Cloud</th></tr></thead>
+        <tbody>
+            <tr><td>Compliance rules (PACE hashtag taxonomy)</td><td>Utilization metric (GMV vs Super Messages vs varied entitlements vs Analytical Impressions)</td></tr>
+            <tr><td>Red Account display filters and dot colors</td><td>Entitlement query (different EntitlementName__c values)</td></tr>
+            <tr><td>Freshness thresholds (14/21 day breakpoints)</td><td>Product sort priority (CC first, MC first, Core first, Tableau first)</td></tr>
+            <tr><td>Context Signal rules</td><td>Summary card labels ("GMV <30%" vs "Sends <30%" vs "Low Util")</td></tr>
+            <tr><td>Analysis tab structure and insight types</td><td>Column header ("GMV Util" vs "MC Util" vs "Core Util" vs "Tableau Util")</td></tr>
+            <tr><td>SLDS styling and visual language</td><td>Cloud home page icon color and subtitle</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Data Integrity -->
+<div class="section">
+    <h2>Data Integrity Advantages</h2>
+
+    <div class="benefit-grid">
+        <div class="benefit-card efficiency">
+            <div class="title">Single Source of Truth</div>
+            <div class="desc">All data pulled directly from Org62 via SOQL at refresh time. No spreadsheet copies, no manual entry, no stale exports. What you see is what's in Salesforce right now.</div>
+        </div>
+        <div class="benefit-card risk">
+            <div class="title">Resolved RA Auto-Exclusion</div>
+            <div class="desc">Red Accounts with Action_Plan_Status__c = 'Resolved' are automatically excluded. No manual cleanup needed — the dashboard always shows only actionable items.</div>
+        </div>
+        <div class="benefit-card efficiency">
+            <div class="title">Automated Compliance Logic</div>
+            <div class="desc">Invalid hashtag detection is programmatic and exhaustive — catches typos (#NoAttrit), wrong prefixes (#PartialAttrit), and wrong symbols (@LicNoAttrit) that humans miss in manual review.</div>
+        </div>
+        <div class="benefit-card visibility">
+            <div class="title">Parent/Child Grouping</div>
+            <div class="desc">Multi-org customers (parent + child accounts) are visually grouped. Children follow their parent in all sort orders, preventing the same customer from appearing scattered across the list.</div>
+        </div>
+    </div>
+</div>
+
+<!-- What This Replaces -->
+<div class="section">
+    <h2>What This Replaces</h2>
+    <table>
+        <thead><tr><th>Old Approach</th><th>Dashboard Equivalent</th></tr></thead>
+        <tbody>
+            <tr><td>Salesforce "My Accounts" list view</td><td>By CSM tab with enriched columns (health, RA, compliance, utilization)</td></tr>
+            <tr><td>Weekly manager spreadsheet with copy/paste from reports</td><td>Analysis tab auto-generated from live data</td></tr>
+            <tr><td>Manual RA audit: "does every CSM have #RA in notes?"</td><td>Automated CSG Compliance column + risk insight</td></tr>
+            <tr><td>Calendar reminders to check renewal dates</td><td>Color-coded urgency + By Renewal Date sorted tab</td></tr>
+            <tr><td>Asking "when did you last update that RA?"</td><td>Freshness dot shows days since last modification</td></tr>
+            <tr><td>Separate utilization reports per cloud</td><td>Inline utilization bar with projected end-of-contract %</td></tr>
+            <tr><td>Tribal knowledge about which hashtags are valid</td><td>Codified validation + Hashtag Guide resource page</td></tr>
+        </tbody>
+    </table>
+</div>
+
+</div>
+
+</body>
+</html>

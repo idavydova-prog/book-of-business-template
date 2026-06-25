@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSG Notes Formatting Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root { --header-bg: #032d60; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Salesforce Sans', Arial, sans-serif; margin: 0; background: #f3f3f3; color: #181818; font-size: 13px; }
+        .app-header { background: var(--header-bg); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+        .app-header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+        .back-link { color: #fff; text-decoration: none; font-size: 1.1rem; opacity: 0.8; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 2rem; }
+        .section { background: #fff; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.07); }
+        .section h2 { margin: 0 0 1rem; font-size: 1rem; color: #032d60; border-bottom: 2px solid #eef4ff; padding-bottom: 0.5rem; }
+        .section h3 { margin: 1rem 0 0.5rem; font-size: 0.85rem; color: #514f4d; }
+        .note { font-size: 0.75rem; color: #706e6b; line-height: 1.5; }
+        .template-box { background: #f4f6f9; padding: 1rem 1.25rem; border-radius: 6px; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.8; margin: 0.75rem 0; border-left: 4px solid #0176d3; }
+        .example-box { background: #f0fef0; padding: 1rem 1.25rem; border-radius: 6px; font-size: 0.75rem; line-height: 1.6; margin: 0.75rem 0; border-left: 4px solid #2e844a; }
+        .bad-box { background: #fef5f5; padding: 1rem 1.25rem; border-radius: 6px; font-size: 0.75rem; line-height: 1.6; margin: 0.75rem 0; border-left: 4px solid #c23934; }
+        .field-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .field-table th { background: #f4f6f9; padding: 0.5rem; text-align: left; border-bottom: 1px solid #e5e5e5; }
+        .field-table td { padding: 0.5rem; border-bottom: 1px solid #f0f0f0; }
+        .step { display: flex; gap: 0.75rem; margin-bottom: 1rem; align-items: flex-start; }
+        .step-num { background: #0176d3; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+        .step-text { font-size: 0.78rem; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <a href="../index.html" class="back-link" title="Back to Home">&larr;</a>
+    <div>
+        <h1>CSG Notes Formatting</h1>
+        <div class="subtitle">How to write compliant SEM_Notes__c entries</div>
+    </div>
+</header>
+
+<div class="container">
+
+<div class="section">
+    <h2>Template</h2>
+    <div class="template-box">
+        <strong>MM/DD/YYYY</strong> <em>Full Name</em> <strong>#LicHashtag</strong> <strong>#SigHashtag</strong> [<strong>#RA</strong> shortened-URL] [<strong>#AFHashtag</strong>]<br>
+        Brief narrative: current status, next steps, key milestones.
+    </div>
+    <p class="note">All fields on one continuous entry. No line breaks before the narrative. Date must be current month.</p>
+</div>
+
+<div class="section">
+    <h2>Field-by-Field Breakdown</h2>
+    <table class="field-table">
+        <thead><tr><th>Position</th><th>Content</th><th>Required?</th><th>Notes</th></tr></thead>
+        <tbody>
+            <tr><td>1</td><td>Date (MM/DD/YYYY)</td><td>Yes</td><td>Must be within the current reporting period</td></tr>
+            <tr><td>2</td><td>CSM Full Name</td><td>Yes</td><td>First and last name of the assigned CSM</td></tr>
+            <tr><td>3</td><td>License hashtag</td><td>Yes</td><td>#LicNoAttrit, #LicPartialAttrit, or #LicFullAttrit</td></tr>
+            <tr><td>4</td><td>Signature hashtag</td><td>Yes (Sig accts)</td><td>#NoSigRisk, #SigRisk, or #SigAttrit</td></tr>
+            <tr><td>5</td><td>#RA + URL</td><td>If RA exists</td><td>#RA followed by shortened Org62 link to the Red Account</td></tr>
+            <tr><td>6</td><td>Agentforce hashtag</td><td>If applicable</td><td>#AfNoRisk or #AFAttrit</td></tr>
+            <tr><td>7</td><td>Narrative</td><td>Yes</td><td>Concise status, risks, and next actions</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <h2>Good Examples</h2>
+    <div class="example-box">
+        <strong>06/02/2026 Benjamin Batista #LicNoAttrit #NoSigRisk</strong> Go-live blocked by Cimulate dependency; R&D (Ata) prioritizing before July. KEM Memorial Day completed. MuleSoft SIP $35K pending.
+    </div>
+    <div class="example-box">
+        <strong>06/02/2026 Benjamin Batista #LicNoAttrit #SigRisk #RA</strong> sfdc.co/abc123 CSM transition complete 5/12. AgentForce paused; restart in 30-45d. CTO requested June 24 mtg re: roadmap.
+    </div>
+    <div class="example-box">
+        <strong>5/29/26 K.Martinez #LicNoAttrit #NoSigRisk #AfNoRisk</strong> New acct, onbd Mar'26. SAP go-live Jun3 (KEM active/ProM live). ATHR+UX queued post-SAP. On-site QBR done.
+    </div>
+</div>
+
+<div class="section">
+    <h2>Bad Examples (Common Failures)</h2>
+    <div class="bad-box">
+        <strong>#NoAttrit #NoSigAttrit</strong> Customer renewed. Everything fine.<br>
+        <span style="color:#c23934;font-size:0.7rem;">Problems: Missing date, missing CSM name, invalid hashtags (#NoAttrit, #NoSigAttrit), vague narrative.</span>
+    </div>
+    <div class="bad-box">
+        <strong>RP(5/18): #NoAttrit.</strong> This was created to keep track of the renewal in Feb 2027.<br>
+        <span style="color:#c23934;font-size:0.7rem;">Problems: Abbreviated name format, #NoAttrit is invalid (use #LicNoAttrit), missing Sig hashtag.</span>
+    </div>
+    <div class="bad-box">
+        <strong>#SuccessDeskPremierUpsellQ4FY17</strong><br>
+        <span style="color:#c23934;font-size:0.7rem;">Problems: Stale entry from 2017. No current date, no CSM, no valid hashtags, no narrative.</span>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Step-by-Step: Writing Your CSG Notes</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-text">Start with today's date in MM/DD/YYYY format</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Add your full name (first + last)</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Add one license hashtag: #LicNoAttrit, #LicPartialAttrit, or #LicFullAttrit</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">If Signature account, add: #NoSigRisk, #SigRisk, or #SigAttrit</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text">If an active Red Account exists, add #RA followed by the shortened URL</div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-text">Write 1-2 sentences: current status, key risks, and next actions</div></div>
+</div>
+
+</div>
+</body>
+</html>

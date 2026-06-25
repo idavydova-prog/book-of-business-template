@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener — Salesforce Org62</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root { --header-bg: #032d60; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Salesforce Sans', Arial, sans-serif; margin: 0; background: #f3f3f3; color: #181818; font-size: 13px; }
+        .app-header { background: var(--header-bg); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
+        .app-header h1 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+        .back-link { color: #fff; text-decoration: none; font-size: 1.1rem; opacity: 0.8; }
+        .back-link:hover { opacity: 1; }
+        .container { max-width: 900px; margin: 2rem auto; padding: 0 2rem; }
+        .section { background: #fff; border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.07); }
+        .section h2 { margin: 0 0 1rem; font-size: 1rem; color: #032d60; border-bottom: 2px solid #eef4ff; padding-bottom: 0.5rem; }
+        .note { font-size: 0.75rem; color: #706e6b; line-height: 1.5; }
+        .tool-card { background: #eef4ff; border-radius: 8px; padding: 1.25rem; margin: 1rem 0; text-align: center; }
+        .tool-card a { font-size: 1.1rem; font-weight: 700; color: #0176d3; text-decoration: none; }
+        .tool-card a:hover { text-decoration: underline; }
+        .tool-card .desc { font-size: 0.75rem; color: #514f4d; margin-top: 0.5rem; }
+        .example-row { display: flex; gap: 1rem; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; font-size: 0.75rem; }
+        .example-row:last-child { border-bottom: none; }
+        .example-label { width: 80px; font-weight: 600; color: #514f4d; flex-shrink: 0; }
+        .example-url { font-family: 'SF Mono', Monaco, monospace; font-size: 0.7rem; word-break: break-all; color: #181818; }
+        .example-url.short { color: #0176d3; font-weight: 600; }
+        .arrow { color: #706e6b; font-size: 1.2rem; flex-shrink: 0; }
+        .step { display: flex; gap: 0.75rem; margin-bottom: 1rem; align-items: flex-start; }
+        .step-num { background: #0176d3; color: #fff; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+        .step-text { font-size: 0.78rem; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <a href="../index.html" class="back-link" title="Back to Home">&larr;</a>
+    <div>
+        <h1>URL Shortener</h1>
+        <div class="subtitle">Shorten Salesforce Org62 URLs for CSG Notes</div>
+    </div>
+</header>
+
+<div class="container">
+
+<div class="section">
+    <h2>Salesforce URL Shortener (sfdc.co)</h2>
+    <div class="tool-card">
+        <a href="https://sfdc.co" target="_blank">https://sfdc.co</a>
+        <div class="desc">Internal Salesforce URL shortener — use this to create short links for Red Account records in CSG Notes</div>
+    </div>
+    <p class="note">When referencing a Red Account in your CSG Notes with #RA, include a shortened URL so anyone reading the notes can quickly navigate to the RA record.</p>
+</div>
+
+<div class="section">
+    <h2>How to Use</h2>
+    <div class="step"><div class="step-num">1</div><div class="step-text">Navigate to the Red Account record in Org62</div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-text">Copy the full URL from your browser's address bar</div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-text">Go to <strong>sfdc.co</strong> and paste the URL</div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-text">Copy the shortened URL (e.g., sfdc.co/abc123)</div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-text">Add it to your CSG Notes after the #RA hashtag</div></div>
+</div>
+
+<div class="section">
+    <h2>Examples</h2>
+    <div class="example-row">
+        <span class="example-label">Full URL</span>
+        <span class="example-url">https://org62.lightning.force.com/lightning/r/Red_Account__c/a4Ved0000009ZQAEA2/view</span>
+    </div>
+    <div class="example-row">
+        <span class="example-label">Shortened</span>
+        <span class="example-url short">sfdc.co/abc123</span>
+    </div>
+    <div class="example-row">
+        <span class="example-label">In CSG Notes</span>
+        <span class="example-url">06/15/2026 CSM Name #LicNoAttrit #NoSigRisk <strong>#RA sfdc.co/abc123</strong> Account status and next steps.</span>
+    </div>
+</div>
+
+<div class="section">
+    <h2>Why Shorten?</h2>
+    <p class="note">
+        The SEM_Notes__c field has limited space and is read by multiple stakeholders. Full Org62 URLs are 80+ characters and clutter the notes. A shortened URL keeps the entry concise while maintaining direct access to the Red Account record.
+    </p>
+    <p class="note" style="margin-top:0.75rem;">
+        <strong>Tip:</strong> Bookmark sfdc.co for quick access. You can also use it to shorten links to Opportunities, Accounts, or Cases when referencing them in notes or Slack messages.
+    </p>
+</div>
+
+</div>
+</body>
+</html>

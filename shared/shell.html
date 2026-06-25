@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book of Business — MANAGER_NAME</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+
+<header class="app-header">
+    <div style="display:flex;align-items:center;gap:1rem;">
+        <a href="../index.html" class="back-link" title="Back to Home">&larr;</a>
+        <div>
+            <h1>Book of Business</h1>
+            <div class="subtitle">MANAGER_NAME — Commerce Cloud CSM Team</div>
+        </div>
+    </div>
+    <div class="header-right">
+        As of AS_OF_DATE<br>
+        ACCOUNT_COUNT Accounts | CSM_COUNT CSMs
+    </div>
+</header>
+
+<section class="summary-cards" id="summary-cards"></section>
+
+<div class="legend">
+    <span style="font-weight:600">Red Account dots:</span>
+    <span class="legend-item"><span class="legend-dot red"></span> Active / Resolution in Progress</span>
+    <span class="legend-item"><span class="legend-dot orange"></span> Precautionary</span>
+</div>
+
+<section class="tabs-container">
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="bycsm">By CSM</button>
+        <button class="tab-btn" data-tab="byrenewal">By Renewal Date</button>
+        <button class="tab-btn" data-tab="byrisk">By Risk</button>
+        <button class="tab-btn" data-tab="all">All Accounts</button>
+    </nav>
+
+    <div class="tab-content active" id="tab-bycsm" data-tab-title="By CSM">
+        <div style="padding: 0.6rem 1rem; border-bottom: 1px solid #e5e5e5; display: flex; align-items: center; gap: 0.5rem;">
+            <label for="csm-filter" style="font-size: 0.75rem; font-weight: 600; color: #514f4d;">Filter by CSM:</label>
+            <select id="csm-filter" style="font-size: 0.75rem; padding: 4px 8px; border: 1px solid #dddbda; border-radius: 4px; color: #181818;">
+                <option value="all">All CSMs</option>
+            </select>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th data-sort="account">Account</th>
+                    <th data-sort="acv">Prior ACV</th>
+
+                    <th>Red Acct</th>
+                    <th>RA Hashtag <span class="info-icon" data-tooltip="Valid ECOMM Headline play hashtags:\n#SIGTRIAL #ARI #SWAP\n#IMPLEMENT #ADOPT #RFP #REVIVE">i</span></th>
+                    <th>Products</th>
+                    <th data-sort="gmv">GMV Util <span class="info-icon" data-tooltip="Actual % used vs projected end-of-contract %.\nGreen <50% | Orange 50-80% | Red >80%">i</span></th>
+                    <th data-sort="date">CC Renewal</th>
+                    <th data-sort="amount">Fcst Attrition</th>
+                    <th>CSG Compliance <span class="info-icon" data-tooltip="Checks: #LicNoAttrit/#LicPartialAttrit/#LicFullAttrit\n#SigRisk/#NoSigRisk/#SigAttrit/#NoSigAttrit\n#RA (required if Red Account exists)">i</span></th>
+                </tr>
+            </thead>
+            <tbody id="tbody-bycsm"></tbody>
+        </table>
+    </div>
+
+    <div class="tab-content" id="tab-byrenewal" data-tab-title="By Renewal Date">
+        <table>
+            <thead>
+                <tr>
+                    <th data-sort="account">Account</th>
+                    <th data-sort="csm">CSM</th>
+                    <th data-sort="acv">Prior ACV</th>
+
+                    <th>Red Acct</th>
+                    <th>RA Hashtag</th>
+                    <th>Products</th>
+                    <th data-sort="gmv">GMV Util</th>
+                    <th data-sort="date">CC Renewal</th>
+                    <th data-sort="amount">Fcst Attrition</th>
+                    <th>CSG Compliance</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-byrenewal"></tbody>
+        </table>
+    </div>
+
+    <div class="tab-content" id="tab-byrisk" data-tab-title="By Risk">
+        <table>
+            <thead>
+                <tr>
+                    <th data-sort="account">Account</th>
+                    <th data-sort="csm">CSM</th>
+                    <th data-sort="acv">Prior ACV</th>
+
+                    <th>Red Acct</th>
+                    <th>RA Hashtag</th>
+                    <th>Products</th>
+                    <th data-sort="gmv">GMV Util</th>
+                    <th data-sort="date">CC Renewal</th>
+                    <th data-sort="amount">Fcst Attrition</th>
+                    <th>CSG Compliance</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-byrisk"></tbody>
+        </table>
+    </div>
+
+    <div class="tab-content" id="tab-all" data-tab-title="All Accounts">
+        <table>
+            <thead>
+                <tr>
+                    <th data-sort="account">Account</th>
+                    <th data-sort="csm">CSM</th>
+                    <th data-sort="acv">Prior ACV</th>
+
+                    <th>Red Acct</th>
+                    <th>RA Hashtag</th>
+                    <th>Products</th>
+                    <th data-sort="gmv">GMV Util</th>
+                    <th data-sort="date">CC Renewal</th>
+                    <th data-sort="amount">Fcst Attrition</th>
+                    <th>CSG Compliance</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-all"></tbody>
+        </table>
+    </div>
+</section>
+
+<script src="../shared/icons.js"></script>
+<script src="data.js"></script>
+<script src="history.js"></script>
+<script src="../shared/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book of Business — CSM Dashboards</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@salesforce-ux/design-system@2.24.4/assets/styles/salesforce-lightning-design-system.min.css">
+    <style>
+        :root { --header-bg: #032d60; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Salesforce Sans', Arial, sans-serif;
+            margin: 0; padding: 0;
+            background: #f3f3f3; color: #181818;
+            min-height: 100vh;
+        }
+        .app-header {
+            background: var(--header-bg);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+        .app-header h1 { margin: 0; font-size: 1.75rem; font-weight: 700; }
+        .app-header .subtitle { font-size: 0.85rem; opacity: 0.8; margin-top: 6px; }
+        .container {
+            max-width: 700px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .cloud-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .cloud-card {
+            background: #fff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: inherit;
+            transition: box-shadow 0.15s, transform 0.15s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            border: 1px solid #e5e5e5;
+            text-align: center;
+        }
+        .cloud-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            transform: translateY(-3px);
+            border-color: #0176d3;
+        }
+        .cloud-card .icon {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .cloud-card .icon svg { width: 32px; height: 32px; }
+        .cloud-card .cloud-name { font-size: 1.1rem; font-weight: 700; color: #032d60; }
+        .cloud-card .cloud-desc { font-size: 0.78rem; color: #706e6b; }
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.72rem;
+            color: #b0adab;
+        }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <h1>Book of Business</h1>
+    <div class="subtitle">CSM Team Dashboards</div>
+</header>
+
+<div class="container">
+    <div class="cloud-grid">
+        <a class="cloud-card" href="cc/index.html">
+            <div class="icon" style="background:#e8f4fd;">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path fill="#0176d3" d="M32 8C18.745 8 8 18.745 8 32s10.745 24 24 24 24-10.745 24-24S45.255 8 32 8zm-4 35l-9-9 2.83-2.83L28 37.34l12.17-12.17L43 28 28 43z"/></svg>
+            </div>
+            <div class="cloud-name">Commerce Cloud</div>
+            <div class="cloud-desc">GMV utilization, CC renewals, CSG compliance</div>
+        </a>
+        <a class="cloud-card" href="mc/index.html">
+            <div class="icon" style="background:#fff4e8;">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path fill="#f59e0b" d="M32 8C18.745 8 8 18.745 8 32s10.745 24 24 24 24-10.745 24-24S45.255 8 32 8zm-4 35l-9-9 2.83-2.83L28 37.34l12.17-12.17L43 28 28 43z"/></svg>
+            </div>
+            <div class="cloud-name">Marketing Cloud</div>
+            <div class="cloud-desc">Super Messages utilization, MC renewals, CSG compliance</div>
+        </a>
+        <a class="cloud-card" href="core/index.html">
+            <div class="icon" style="background:#e6f7fa;">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path fill="#0d9dda" d="M32 8C18.745 8 8 18.745 8 32s10.745 24 24 24 24-10.745 24-24S45.255 8 32 8zm-4 35l-9-9 2.83-2.83L28 37.34l12.17-12.17L43 28 28 43z"/></svg>
+            </div>
+            <div class="cloud-name">Core</div>
+            <div class="cloud-desc">License utilization, Core renewals, CSG compliance</div>
+        </a>
+        <a class="cloud-card" href="tableau/index.html">
+            <div class="icon" style="background:#f3e8ff;">
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path fill="#7c3aed" d="M33.5 4h-3v8h-8v3h8v8h3v-8h8v-3h-8V4z"/><path fill="#e8590c" d="M49.5 16h-2.5v6.5h-6.5v2.5h6.5v6.5h2.5v-6.5H56v-2.5h-6.5V16z"/><path fill="#4f9d69" d="M17 16h-2.5v6.5H8v2.5h6.5v6.5H17v-6.5h6.5v-2.5H17V16z"/><path fill="#5b9bd5" d="M33.5 28h-3v8h-8v3h8v8h3v-8h8v-3h-8v-8z"/><path fill="#e8590c" d="M17 40h-2.5v6.5H8v2.5h6.5V56H17v-6.5h6.5v-2.5H17V40z"/><path fill="#7c3aed" d="M49.5 40h-2.5v6.5h-6.5v2.5h6.5V56h2.5v-6.5H56v-2.5h-6.5V40z"/></svg>
+            </div>
+            <div class="cloud-name">Tableau</div>
+            <div class="cloud-desc">Analytical Impressions utilization, Tableau renewals, CSG compliance</div>
+        </a>
+    </div>
+</div>
+
+<div style="max-width:700px;margin:1.5rem auto 0;padding:0 2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+    <a href="validation-rules.html" style="flex:1;min-width:250px;display:block;background:#fff;border:1px solid #e5e5e5;border-radius:0.5rem;padding:1rem 1.5rem;text-decoration:none;color:#032d60;font-size:0.8rem;font-weight:600;box-shadow:0 2px 4px rgba(0,0,0,0.05);transition:border-color 0.15s;">
+        <span style="margin-right:0.5rem;">&#9745;</span> Validation Rules
+        <span style="display:block;font-weight:400;font-size:0.72rem;color:#706e6b;margin-top:3px;">Compliance, freshness, and context signal rules</span>
+    </a>
+    <a href="benefits.html" style="flex:1;min-width:250px;display:block;background:#fff;border:1px solid #e5e5e5;border-radius:0.5rem;padding:1rem 1.5rem;text-decoration:none;color:#032d60;font-size:0.8rem;font-weight:600;box-shadow:0 2px 4px rgba(0,0,0,0.05);transition:border-color 0.15s;">
+        <span style="margin-right:0.5rem;">&#9734;</span> Dashboard Benefits
+        <span style="display:block;font-weight:400;font-size:0.72rem;color:#706e6b;margin-top:3px;">Value across clouds, managers, and workflows</span>
+    </a>
+</div>
+
+<div class="footer">Data sourced from Salesforce Org62. Select a cloud above to view team dashboards.</div>
+
+</body>
+</html>
