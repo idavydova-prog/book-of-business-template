@@ -53,6 +53,25 @@ WHERE Name IN ({account_names_from_step_4})
 AND Region__c = 'AMER'
 ```
 
+### Step 6: Populate Slack DM channel IDs for the nudge system
+
+After generating `data.js`, populate the `slackDMs` map with each CSM's Slack DM channel ID. This enables the one-click compliance nudge system.
+
+**For each CSM in `csmOrder`:**
+1. Search Slack for the CSM by name using the Slack MCP
+2. Get their Slack user ID from the search result
+3. Send a draft/test message to that user ID — the API response includes the DM channel ID (starts with `D`)
+4. Add the mapping to `slackDMs` in `data.js`
+
+```javascript
+const slackDMs = {
+    "CSM Full Name": "D06JAAW22U9",
+    "Another CSM": "D07BBX33V0A"
+};
+```
+
+**This step is NOT optional.** Every refresh must ensure `slackDMs` is populated for all CSMs in `csmOrder`. If a CSM cannot be found in Slack, log a warning but do not fail the refresh.
+
 ### Why this replaces the old method
 
 The previous approach used SO Ownership (`cssf_Owners_Manager__c`) + Team Memberships. This failed for CSMs who don't own any Success Overviews — they were invisible. Engagements (`csc__Playbook__c`) are universal: every active CSM runs engagements on their accounts regardless of SO ownership.

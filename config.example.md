@@ -10,18 +10,20 @@ Replace the placeholders below with your values before running Claude Code.
 | `{{CLOUD_NAME}}` | The cloud you manage | `Commerce Cloud` |
 | `{{CSG_REGION}}` | Your CSG region filter | `AMER PACE` |
 
-## Slack (optional — for nudge system)
+## Slack (required — powers the compliance nudge system)
 
 | Placeholder | Description | Example |
 |-------------|-------------|---------|
 | `{{SLACK_DM_IDS}}` | Map of CSM name → Slack DM channel ID | `"Sara Fuhs": "D06HW7Y8A22"` |
 
-### Finding Slack DM Channel IDs
+### How Slack DM Channel IDs are discovered
 
-DM channel IDs are NOT the same as user IDs. To discover them:
-1. Use the Slack MCP to create a draft message to a user
-2. The API response includes the DM channel ID (starts with `D`)
-3. Add each CSM's DM ID to the `slackDMs` map in `data.js`
+DM channel IDs are NOT the same as user IDs. Claude discovers them automatically on the first refresh:
+1. Searches Slack for each CSM by name
+2. Sends a draft message to each user — the API response returns the DM channel ID (starts with `D`)
+3. Populates the `slackDMs` map in `data.js`
+
+You do NOT need to find these manually. Claude handles it as part of the standard refresh flow.
 
 ## Fiscal Calendar
 

@@ -19,14 +19,15 @@ Claude Code:
   1. Queries OrgCS for CSM/account assignments
   2. Queries Org62 for renewals, Red Accounts, entitlements
   3. Validates compliance against PACE hashtag rules
-  4. Generates data.js with the account array
-  5. Dashboard renders instantly in browser (static HTML, no server needed)
+  4. Discovers Slack DM channel IDs for each CSM (enables nudge system)
+  5. Generates data.js with the account array + slackDMs map
+  6. Dashboard renders instantly in browser (static HTML, no server needed)
 ```
 
 ## What you need
 
 - **Claude Code** with MCP access to Org62 (read-only) and OrgCS
-- **Slack MCP** (optional) — for the nudge system to open DMs
+- **Slack MCP** — required for the compliance nudge system (auto-discovers DM channels on first refresh)
 - **A browser** — dashboards are static HTML, opened by dragging to the Dock icon
 
 ## Setup
