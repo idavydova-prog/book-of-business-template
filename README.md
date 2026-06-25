@@ -74,6 +74,20 @@ Refresh the Book of Business dashboard for [Your Name]
 
 Claude will query Org62, generate `data.js`, and your dashboard is live.
 
+## Troubleshooting
+
+### Name matching
+
+Your name must match **exactly** how it appears in Org62's `CSM_Manager__c` field — including middle initials, suffixes, or parentheticals. For example, "Alaina Gilberg" won't work if Org62 has "Alaina L. Gilberg". If your first refresh returns zero accounts, ask Claude:
+
+```
+Search for accounts where CSM_Manager__c starts with "[Your First Name]"
+```
+
+### OrgCS authentication
+
+The CLAUDE.md instructions reference OrgCS as the authoritative source for CSM assignments. If OrgCS OAuth fails (cross-org blocking), Claude will fall back to using `CSM_Manager__c` from Org62 directly. This covers ~95% of cases — the main gap is CSMs who don't appear in the Org62 field, which is rare for PACE teams.
+
 ## Folder structure
 
 ```
