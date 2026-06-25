@@ -1,6 +1,7 @@
 const TODAY = new Date(dashboardConfig.asOf);
 const FQ_START = new Date(dashboardConfig.fqStart);
 const FQ_END = new Date(dashboardConfig.fqEnd);
+const IS_SINGLE_CSM = (typeof csmOrder !== 'undefined') && csmOrder.length === 1;
 
 // Dynamically render header-right from data
 (function() {
@@ -11,7 +12,9 @@ const FQ_END = new Date(dashboardConfig.fqEnd);
         const dateStr = months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
         const acctCount = accounts.length;
         const csmCount = (typeof csmOrder !== 'undefined') ? csmOrder.length : [...new Set(accounts.map(a => a.csm))].length;
-        headerRight.innerHTML = 'As of ' + dateStr + '<br>' + acctCount + ' Accounts | ' + csmCount + ' CSMs';
+        headerRight.innerHTML = IS_SINGLE_CSM
+            ? 'As of ' + dateStr + '<br>' + acctCount + ' Accounts'
+            : 'As of ' + dateStr + '<br>' + acctCount + ' Accounts | ' + csmCount + ' CSMs';
         const refreshed = document.createElement('div');
         refreshed.style.cssText = 'margin-top:4px;font-size:0.65rem;opacity:0.7;';
         refreshed.textContent = 'Last refreshed: ' + dashboardConfig.asOf;
@@ -45,7 +48,7 @@ const ariTotalCount = accounts.filter(a => a.ari && a.ari.length > 0).length;
 
 document.getElementById('summary-cards').innerHTML = `
     <div class="summary-card"><div class="number">${accounts.length}</div><div class="label">Total Accounts</div></div>
-    <div class="summary-card"><div class="number">${csmOrder.length}</div><div class="label">CSMs</div></div>
+    ${IS_SINGLE_CSM ? '' : `<div class="summary-card"><div class="number">${csmOrder.length}</div><div class="label">CSMs</div></div>`}
     <div class="summary-card alert"><div class="number">${raCount}</div><div class="label">Accts w/ Active RA</div></div>
     <div class="summary-card ${ariTotalCount > 0 ? 'ari-card' : ''}"><div class="number">${ariTotalCount}</div><div class="label">Active ARIs</div></div>
     <div class="summary-card ${renewalsThisQtr > 0 ? 'warn' : ''}"><div class="number">${renewalsThisQtr}</div><div class="label">Renewals This Qtr</div></div>
@@ -176,7 +179,7 @@ function renderRACompliance(acct) {
     const freshDot = mostRecent ? renderFreshnessDot(mostRecent, 'RA last updated') : '';
     const hasFailure = acct.ra.some(r => r.raCompliance !== 'pass');
     const alreadySent = hasFailure && wasNudged(acct.name, 'ra');
-    const nudgeAttr = (hasFailure && !alreadySent) ? ` class="nudge-trigger" data-acct="${esc(acct.name)}" data-type="ra"` : '';
+    const nudgeAttr = (hasFailure && !alreadySent && !IS_SINGLE_CSM) ? ` class="nudge-trigger" data-acct="${esc(acct.name)}" data-type="ra"` : '';
     if (acct.ra.length <= 2) {
         let inner = acct.ra.map(r => {
             const icon = r.raCompliance === 'pass' ? '<span class="compliance-pass">✓ Pass</span>' : '<span class="compliance-fail">✗ Fail</span>';
@@ -204,6 +207,9 @@ function renderCompliance(acct) {
     const freshDot = acct.csgNotesDate ? renderFreshnessDot(acct.csgNotesDate, 'CSG Notes updated') : '';
     if (acct.compliance === 'pass') {
         return `${freshDot}<span class="compliance-pass" data-tooltip="${esc(acct.csgNotes)}">✓ Pass</span><span class="compliance-reason">${acct.complianceReason}</span>`;
+    }
+    if (IS_SINGLE_CSM) {
+        return `${freshDot}<span class="compliance-fail" data-tooltip="${esc(acct.csgNotes)}">✗ Fail</span><span class="compliance-reason">${acct.complianceReason}</span>`;
     }
     if (wasNudged(acct.name, 'csg')) {
         return `${freshDot}<span class="compliance-fail" data-tooltip="${esc(acct.csgNotes)}">✗ Fail</span><span class="compliance-reason">${acct.complianceReason}</span>${nudgeBadge(acct.name, 'csg')}`;
@@ -405,16 +411,26 @@ document.querySelectorAll('thead th[data-sort]').forEach(th => {
     });
 });
 
-renderByCSM();
-
-const csmFilterEl = document.getElementById('csm-filter');
-csmOrder.forEach(csm => {
-    const opt = document.createElement('option');
-    opt.value = csm;
-    opt.textContent = csm;
-    csmFilterEl.appendChild(opt);
-});
-csmFilterEl.addEventListener('change', () => renderByCSM(csmFilterEl.value));
+if (IS_SINGLE_CSM) {
+    const byCsmBtn = document.querySelector('[data-tab="bycsm"]');
+    const byCsmPanel = document.getElementById('tab-bycsm');
+    if (byCsmBtn) byCsmBtn.style.display = 'none';
+    if (byCsmPanel) byCsmPanel.classList.remove('active');
+    const allBtn = document.querySelector('[data-tab="all"]');
+    const allPanel = document.getElementById('tab-all');
+    if (allBtn) allBtn.classList.add('active');
+    if (allPanel) allPanel.classList.add('active');
+} else {
+    renderByCSM();
+    const csmFilterEl = document.getElementById('csm-filter');
+    csmOrder.forEach(csm => {
+        const opt = document.createElement('option');
+        opt.value = csm;
+        opt.textContent = csm;
+        csmFilterEl.appendChild(opt);
+    });
+    csmFilterEl.addEventListener('change', () => renderByCSM(csmFilterEl.value));
+}
 
 renderByRenewal();
 renderByRisk();

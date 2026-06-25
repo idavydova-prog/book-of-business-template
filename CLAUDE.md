@@ -70,7 +70,9 @@ const slackDMs = {
 };
 ```
 
-**This step is NOT optional.** Every refresh must ensure `slackDMs` is populated for all CSMs in `csmOrder`. If a CSM cannot be found in Slack, log a warning but do not fail the refresh.
+**This step is NOT optional for manager dashboards.** Every refresh must ensure `slackDMs` is populated for all CSMs in `csmOrder`. If a CSM cannot be found in Slack, log a warning but do not fail the refresh.
+
+**Single-CSM dashboards (where `csmOrder` has 1 entry):** Skip this step entirely. The nudge system is auto-disabled — a CSM doesn't need to nudge themselves. Leave `slackDMs = {}` empty.
 
 ### Why this replaces the old method
 
